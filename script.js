@@ -16,9 +16,8 @@ buttons.forEach((button) => {
             case '=':
                 button.addEventListener('click', (e) => {
                     equal();
-                })
-                    
-                       
+                });
+                break; 
             case '+':
                 button.addEventListener('click', (e) => {
                     if (cacheValue !== "") {
@@ -118,7 +117,24 @@ function subtract(a) {
 
 }
 function equal(){
-   
+    if(cache.length >= 2) {
+        clearDisplay();
+        let sum = cache[0] - cache[1];
+        cache = [];
+        cache.push(sum);
+        setDisplayValue(cache);
+    }
+}
+function multiply(a) {
+    cache.push(a);
+    console.log(cache);
+    if(cache.length >= 2) {
+        clearDisplay();
+        let sum = cache[0] * cache[1];
+        cache = [];
+        cache.push(sum);
+        setDisplayValue(cache);
+    }
 }
  // Sprawdź, jaki operator został wybrany jako ostatni i czy została podana liczba, wtedy wykonaj działanie ostatniego operatora.
     // Jeśli nie podano liczby, a kliknięto operator, wyświetl wartość z pamięci podręcznej (cache).
