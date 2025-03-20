@@ -6,47 +6,78 @@ let buttonNum = [];
 let buttonOperator = [];
 let buttonFunction = [];
 let cache = [];
-let cacheValue =  "";
+let cacheValue = "";
+
+let oldEvet = "";
 buttons.forEach((button) => {
     if(button.classList.contains('operator')) {
         buttonOperator.push(button);
         const operator = button.value;
         switch(operator) {
 
-            case '=':
-                button.addEventListener('click', (e) => {
-                    equal();
-                });
-                break; 
+            
+            
             case '+':
-                button.addEventListener('click', (e) => {
-                    if (cacheValue !== "") {
-                        add(parseFloat(cacheValue));
-                    }
+               
+            button.addEventListener('click', (e) => { 
+            if (cacheValue != "") { 
+            add(parseFloat(cacheValue)); 
+            }//add(parseFloat(display.value))          
                 });
                 break;
             case '-':
                 button.addEventListener('click', (e) => {
-                    if (cacheValue !== "") {
-                        subtract(parseFloat(cacheValue));
-                    }
-                });
+            if (cacheValue != "") { 
+            divide(parseFloat(cacheValue)); 
+            }//add(parseFloat(display.value)
+        });
                 break;
             case '*':
                 button.addEventListener('click', (e) => {
                      if (cacheValue !== "") {
                        multiply(parseFloat(cacheValue)); 
-                     }
+                     }//multiply(parseFloat(display.value));
                 });
                 break;
             case '/':
                 button.addEventListener('click', (e) => {
                     if (cacheValue !== "") {
                         divide(parseFloat(cacheValue));
-                    }
+                    }//divide(parseFloat(display.value));
                 });
+                 break;
+            case '.':
+                buttonFunction.push(button);
+                button.addEventListener('click', (e) => {
+                setDisplayValue(e.target.value);
+                }//setDisplayValue(e.target.value)
+            );
+            break;
+            case 'all-clear': 
+            buttonFunction.push(button); 
+            button.addEventListener('click', (e) => {
+                clearDisplay(); 
+                cache = []; 
+            }//clearDisplay()
+            ); 
+            break;
+            case '=':
+                buttonFunction.push(button);
+                button.addEventListener('click', (_e) => {
+                    equal();
+                }//equal()
+            );
                 break;
-        }
+                default:
+                    buttonNum.push(button);
+                    buttonFunction.push(button);
+                    button.addEventListener('click', (e) => {
+                        setDisplayValue(e.target.value);
+                    }//setDisplayValue(e.target.value)
+                );
+                break;
+
+                   }
     }else if(button.classList.contains('decimal')) {
         buttonFunction.push(button);
         button.addEventListener('click', (e) =>  {
@@ -63,7 +94,7 @@ buttons.forEach((button) => {
         button.addEventListener('click', (e) => {
             equal();
         });
-    }else {
+    }else {  
         buttonNum.push(button);
         buttonFunction.push(button);
         button.addEventListener('click', (e) => {
@@ -73,7 +104,6 @@ buttons.forEach((button) => {
     }
 
 });
-
 
 function setDisplayValue(value) {
     
@@ -87,20 +117,25 @@ function clearDisplay() {
 }
 let test = true;
 function add(a) {
+    oldEvet = "+"
     cache.push(a);
+        clearDisplay();
+
     console.log(cache);
-    if(cache.length >= 2) {
+    if(cache.length > 1) {
         clearDisplay();
         let sum = cache[0] + cache[1];
         cache = [];
         cache.push(sum);
-        setDisplayValue(cache);
     }
-    else {
-        clearDisplay();
-    }
+    // else {
+    //     clearDisplay();
+    // }
+    console.log(cache);
+
 }
 function subtract(a) {
+     oldEvet = "-"
     cache.push(a);
     console.log(cache);
     if(cache.length >= 2) {
@@ -108,21 +143,25 @@ function subtract(a) {
         let sum = cache[0] - cache[1];
         cache = [];
         cache.push(sum);
-        setDisplayValue(cache);
     }
     else {
         clearDisplay();
     }
-
-
 }
-function equal(){
+function divide(a) {
+     oldEvet = "/"
+    cache.push(a);
+    console.log(cache);
     if(cache.length >= 2) {
         clearDisplay();
-        let sum = cache[0] - cache[1];
+        let sum = cache[0] / cache[1];
         cache = [];
         cache.push(sum);
         setDisplayValue(cache);
+    
+    }
+    else {
+        clearDisplay();
     }
 }
 function multiply(a) {
@@ -135,21 +174,34 @@ function multiply(a) {
         cache.push(sum);
         setDisplayValue(cache);
     }
+    else {
+        clearDisplay();
+    }
 }
- // Sprawdź, jaki operator został wybrany jako ostatni i czy została podana liczba, wtedy wykonaj działanie ostatniego operatora.
-    // Jeśli nie podano liczby, a kliknięto operator, wyświetl wartość z pamięci podręcznej (cache).
-// Metoda/funkcja mnożenia
+function equal() {
+    switch(oldEvet) {
+        case "+":
+            add(parseFloat(cacheValue));
+            break;
+        case "-":
+            subtract(parseFloat(cacheValue));
+            break;
+        case "*":
+            multiply(parseFloat(cacheValue));
+            break;
+        case "/":
+            divide(parseFloat(cacheValue));
+            break;
+    }// pacse ezil +.../ tao
 
-// Metoda/funkcja dzielenia
 
-// Metoda/funkcja dodawania liczb zmiennoprzecinkowych: dodawany jest przecinek, a wartości float muszą zawierać kropkę (np. 1.2 zamiast 1,2).
-
-// Te zmienne nie są wykorzystywane. Dodaje się do nich przyciski z kalkulatora, ale potem nie są używane.
-// Pasowałoby je usunąć z kodu.
-// let buttonNum = [];
-// let buttonOperator = [];
-// let buttonFunction = [];
-
-// Gdy wszystko będzie działać, dopisz komentarze wyjaśniające działanie kodu oraz udokumentuj go w plikach Markdown dokumentacji:
-
-// Ten kod powinien być w Moduł 0: Kalkulator
+    if(cache.length >= 1) {
+        clearDisplay();
+        console.log(cache);
+        setDisplayValue(cache[0]);
+        
+    }
+    else {
+        clearDisplay()
+    }
+}
