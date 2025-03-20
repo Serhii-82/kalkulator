@@ -29,7 +29,7 @@ buttons.forEach((button) => {
                 button.addEventListener('click', (e) => {
             if (cacheValue != "") { 
             divide(parseFloat(cacheValue)); 
-            }//add(parseFloat(display.value)
+            }//divide(parseFloat(display.value)
         });
                 break;
             case '*':
